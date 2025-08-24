@@ -21,7 +21,7 @@ pip install numpy scipy matplotlib pandas
 Clone the repository:
 
 ```
-git clone https://github.com/unalmedmathnum/unalmedmathnum-analysis2024/
+git clone https://github.com/unalmedmathnum/numericalAnalysis_2025/
 ```
 
 ## Contributing
