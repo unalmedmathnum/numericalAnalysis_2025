@@ -1,16 +1,24 @@
 {
-  "name": "root-finding",
+  "name": "numericalanalysis_2025",
   "version": "1.0.0",
-  "description": "",
+  "description": "Welcome to the Numerical Analysis Course Codes repository!  This repository contains (almost) all the code examples, scripts, and computational exercises  corresponding to the lectures in the numerical analysis course.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
-    "commit": "git-cz"
+    "commit": "cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zaprovic/numericalAnalysis_2025.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zaprovic/numericalAnalysis_2025/issues"
+  },
+  "homepage": "https://github.com/Zaprovic/numericalAnalysis_2025#readme",
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
