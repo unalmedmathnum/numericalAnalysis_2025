@@ -4,17 +4,43 @@ This repository contains (almost) all the code examples, scripts, and computatio
 corresponding to the lectures in the numerical analysis course.
 
 ## Requirements
-All codes are written in Python. To run the scripts, you will need Python 3.9 (at least) and the following libraries:
+All codes are written in Python. To run the scripts, you will need:
 
-numpy
-scipy
-matplotlib
-pandas 
+- **Python 3.9 or higher**
+- **Virtual environment** (recommended for dependency isolation)
+- **Dependencies listed in `requirements.txt`**
 
-You can install all dependencies with:
+### Python Installation
+- **Windows**: Download from [python.org](https://python.org/) or install via Microsoft Store
+- **macOS**: 
+  ```bash
+  # Using Homebrew (recommended)
+  brew install python
+  
+  # Or download from python.org
+  ```
+- **Linux**: Usually pre-installed, or install via package manager:
+  ```bash
+  # Ubuntu/Debian
+  sudo apt update && sudo apt install python3 python3-pip python3-venv
+  
+  # CentOS/RHEL/Fedora
+  sudo dnf install python3 python3-pip
+  ```
 
-```
-pip install numpy scipy matplotlib pandas
+### Quick Setup (using requirements.txt)
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
+# Install all dependencies
+pip install -r requirements.txt
 ```
 
 ## Development Setup
@@ -61,15 +87,51 @@ This repository uses conventional commits to maintain a clean and standardized c
    cd numericalAnalysis_2025
    ```
 
-2. **Install project dependencies**:
+2. **Set up Python virtual environment** (recommended):
    ```bash
-   npm install
+   # Create virtual environment
+   python -m venv venv
+   
+   # Activate virtual environment
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+   
+   # Your terminal prompt should now show (venv) at the beginning
    ```
 
 3. **Install Python dependencies**:
    ```bash
-   pip install numpy scipy matplotlib pandas
+   # Install from requirements.txt (recommended)
+   pip install -r requirements.txt
+   
+   # Or install individual packages
+   # pip install numpy scipy matplotlib pandas
    ```
+
+4. **Install Node.js project dependencies**:
+   ```bash
+   npm install
+   ```
+
+### Working with Virtual Environment
+- **Always activate** the virtual environment before working on the project:
+  ```bash
+  # On Windows:
+  venv\Scripts\activate
+  # On macOS/Linux:
+  source venv/bin/activate
+  ```
+- **Deactivate** when you're done:
+  ```bash
+  deactivate
+  ```
+- **Verify** you're in the virtual environment:
+  ```bash
+  which python  # Should show path to venv/bin/python (macOS/Linux)
+  where python  # Should show path to venv\Scripts\python.exe (Windows)
+  ```
 
 ### Making Commits
 Instead of using `git commit -m "message"`, use our standardized commit process:
@@ -137,12 +199,49 @@ with proper error handling and convergence criteria.
 - Run `npm install` to install all dependencies
 - Make sure you're in the project root directory
 
-## Usage
-Clone the repository:
+**Python/Virtual Environment Issues**
+- **"python: command not found"**: 
+  - Try `python3` instead of `python`
+  - Make sure Python is installed and in your PATH
+- **"No module named 'numpy'" (or other packages)**:
+  - Make sure your virtual environment is activated
+  - Run `pip install -r requirements.txt`
+- **Virtual environment not activating**:
+  - Make sure you're in the project root directory
+  - Check if `venv` folder exists
+  - Try creating a new virtual environment: `python -m venv venv`
+- **Permission errors when installing packages**:
+  - Use virtual environment instead of global Python
+  - Never use `sudo pip install`
 
+## Usage
+**Important**: Always activate your virtual environment before running any Python scripts:
+
+```bash
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
 ```
-git clone https://github.com/unalmedmathnum/numericalAnalysis_2025/
+
+Navigate to the specific topic directory and run the Python scripts:
+
+```bash
+cd root-finding/src/parte-01
+python main.py  # for Python scripts
 ```
+
+For Jupyter notebooks:
+```bash
+# Install Jupyter in your virtual environment (if not already installed)
+pip install jupyter
+
+# Start Jupyter notebook
+jupyter notebook  # then navigate to the desired .ipynb file
+```
+
+**Note**: Make sure to keep your virtual environment activated throughout your work session.
 
 ## Contributing
 This repository is intended as a resource for students in the numerical analysis course. 
