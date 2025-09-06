@@ -114,6 +114,8 @@ This repository uses conventional commits to maintain a clean and standardized c
    ```bash
    npm install
    ```
+   
+   **⚠️ Important**: This step is **required** to enable commit linting and conventional commits enforcement. Without running `npm install`, the commit hooks (husky) won't be installed, and you'll be able to make commits that don't follow the conventional commits standard, which defeats the purpose of this setup.
 
 ### Working with Virtual Environment
 - **Always activate** the virtual environment before working on the project:
@@ -134,6 +136,8 @@ This repository uses conventional commits to maintain a clean and standardized c
   ```
 
 ### Making Commits
+**⚠️ Critical**: Make sure you have run `npm install` first, otherwise the conventional commits enforcement won't work!
+
 Instead of using `git commit -m "message"`, use our standardized commit process:
 
 ```bash
@@ -144,6 +148,12 @@ This will:
 - Guide you through creating a properly formatted conventional commit
 - Automatically lint your commit message
 - Ensure consistency across all contributors
+
+**What happens if you skip `npm install`?**
+- Git hooks won't be installed
+- You'll be able to commit with any message format
+- The conventional commits standard won't be enforced
+- This breaks the consistency we're trying to maintain
 
 **Example commit types:**
 - `feat`: A new feature
@@ -194,6 +204,7 @@ with proper error handling and convergence criteria.
 - Make sure you ran `npm install` after cloning
 - Check if `.husky` directory exists
 - Try running: `npm run prepare`
+- **If you can commit without following conventional format**: You definitely didn't run `npm install`
 
 **"commitizen: command not found"**
 - Run `npm install` to install all dependencies
