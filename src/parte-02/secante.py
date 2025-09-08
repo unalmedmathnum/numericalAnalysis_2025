@@ -12,11 +12,12 @@ def secante(
     f: Callable[[float], float], x0: float, x1: float, delta: float, m: int
 ) -> SecantMethod:
     for i in range(m):
-        x = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0))
+        df_numeric = (f(x1) - f(x0)) / (x1 - x0)
+        x = x1 - f(x1) / df_numeric
 
         if np.abs(f(x)) < delta:
             return {
-                "solution": x,
+                "solution": float(x),
                 "message": f"Convergence satisfied after {i+1} iterations",
             }
 
@@ -24,7 +25,7 @@ def secante(
         x1 = x
 
     return {
-        "solution": x,
+        "solution": float(x),
         "message": "Maximum number of iterations exceeded",
     }
 
