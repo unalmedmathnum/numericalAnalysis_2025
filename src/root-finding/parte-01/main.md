@@ -1,0 +1,54 @@
+# **Newton's method: Systems of equations**
+
+Let us consider Newton's method to find roots of some function $f(x)$ in an interval given by $[a,b]$
+
+$$
+\begin{align*}
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+\end{align*}
+$$
+
+We know that in order to apply this method, we need that $f \in \mathcal{C}^2[a,b]$, as well as the existence of some $p \in [a,b]$ such that $f(p) =0$ and $f'(p) \neq 0$. These conditions guarantee the existence of some $\delta > 0$ such that Newton's method converges to $p$ for any initial approximation $p_0 \in [p-\delta,p+\delta]$.
+
+This is a very nice method to solve for the roots of a function, as long as we pick a proper initial approximation. However, it would be nice to generalize this problem to not only solve for a single variable from a single equation, but rather an entire system of equations with $n$ variables.
+
+For this, let us write Newton's method in a different manner
+
+$$
+\begin{align*}
+x_{n+1} = x_n - f'(x_n)^{-1} \cdot f(x_n)
+\end{align*}
+$$
+
+The reason why we are writing the iteration formula this way is to identify how can we create a vector version for the method. If we want to talk about a system of equations, then it's natural to think we will have variables $x_1, x_2, \dots, x_n$ and a total of $n$ equations, which can be represented as follows
+
+$$
+\begin{gathered}
+f_1(x_1, x_2, \dots, x_n) = 0 \\
+f_2(x_1, x_2, \dots, x_n) = 0 \\
+\vdots \\
+f_n(x_1, x_2, \dots, x_n) = 0
+\end{gathered}
+$$
+
+Then we can set this as a vector problem of the form $\boldsymbol{F}(\boldsymbol{X}) = \boldsymbol{0}$, where $\boldsymbol{F}(\boldsymbol{X}) = (f_1, f_2, \dots, f_n)^T$ and $\boldsymbol{X} = (x_1, x_2, \dots, x_n)^T$ and the vector method we must build should have the form
+
+$$
+\begin{align*}
+\boldsymbol{X^{(k+1)}} = \boldsymbol{X^{(k)}} - \Phi\left(X^{(k)}\right) \bullet \boldsymbol{F\left(\boldsymbol{X^{(k)}}\right)}
+\end{align*}
+$$
+
+Where $\Phi$ must represent something related to the derivative of $\boldsymbol{F}$. For this let's start by something simpler.
+
+Consider a function $f: \mathbb{R} \to \mathbb{R}$, then its derivative is another function of the form $f': \mathbb{R} \to \mathbb{R}$. This makes sense since $f$ only depends on one real argument, then it has a rate of change with respect to that single variable and nothing else.
+
+However if $f: \mathbb{R}^n \to \mathbb{R}$ it means that $f$ depends on n arguments, then it has $n$ rates of changes and we typically count them by taking partial derivatives given by $\frac{\partial f}{\partial x_i}$. All of these derivatives can be gathered into what is known as the *gradient* of $f$, denoted by $\nabla f$ and defined as follows
+
+$$
+\begin{align*}
+\nabla f = \frac{\partial f}{\partial x_i} \quad \text{(Index notation)}
+\end{align*}
+$$
+
+
