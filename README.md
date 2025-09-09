@@ -622,4 +622,4 @@ Print this out or bookmark it! Here's everything you need to do:
 
 **Remember**: The most important thing is the `(venv)` in your terminal - if you don't see it, activate your virtual environment first!
 
-Good luck with your numerical analysis journey! 🚀✨
+
