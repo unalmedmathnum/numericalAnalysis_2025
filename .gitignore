@@ -173,3 +173,7 @@ pyrightconfig.json
 node_modules/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/modules.xml
+.idea/numericalAnalysis_2025.iml
+.idea/vcs.xml
