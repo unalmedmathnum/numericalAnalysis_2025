@@ -71,3 +71,26 @@ if __name__ == "__main__":
 
     print(f"g(x) = cos(sqrt(x**2))")
     print(f"Aproximated root for g(x) = {root}")
+
+ # ==========================
+  # Extra: Plotting section
+    # ==========================
+
+    def plot_function(func, a, b, root, title):
+        x = np.linspace(a, b, 400)
+        y = func(x)
+
+        plt.figure(figsize=(8,5))
+        plt.axhline(0, color="black", linewidth=1)
+        plt.plot(x, y, label=title, color="blue")
+        if isinstance(root, float):
+            plt.plot(root, func(root), "ro", label=f"Root ≈ {root:.6f}")
+        plt.xlabel("x")
+        plt.ylabel("f(x)")
+        plt.title(f"Bisection Method Visualization\n{title}")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+
+    plot_function(f, 0, 5, root, "f(x) = (x-1)(x-3)(x-4)")
+    plot_function(g, 1, 4, root, "g(x) = cos(sqrt(x**2))")
