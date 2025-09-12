@@ -9,7 +9,11 @@ class SecantMethod(TypedDict):
 
 
 def secante(
-    f: Callable[[float], float], x0: float, x1: float, delta: float, m: int
+    f: Callable[[float], float],
+    x0: float,
+    x1: float,
+    delta: float = 1e-5,
+    max_iterations: int = 1000,
 ) -> SecantMethod:
     """
     Find a root of a function using the secant method.
@@ -45,7 +49,17 @@ def secante(
         >>> print(f"Root: {result['solution']}")
         Root: 1.414214
     """
-    for i in range(m):
+
+    if x1 == x0:
+        raise ValueError("Initial guess x0 and x1 must be different")
+
+    if delta <= 0:
+        raise ValueError("Tolerance must be a positive quantity")
+
+    if max_iterations <= 0:
+        raise ValueError("Maximum number of iterations must be a positive quantity")
+
+    for i in range(max_iterations):
         df_numeric = (f(x1) - f(x0)) / (x1 - x0)
         x = x1 - f(x1) / df_numeric
 
