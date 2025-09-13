@@ -10,6 +10,7 @@ Metodo de Bisección
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 """
 This method finds an approximate root of a continuous function `func`
@@ -59,18 +60,18 @@ if __name__ == "__main__":
     def f(x):
       return (x-1)*(x-3)*(x-4)
 
-    root = bisection(f, 0, 5, tol, max_iter)
+    root_f = bisection(f, 0, 5, tol, max_iter)
 
     print(f"f(x) = (x-1)(x-3)(x-4)")
-    print(f"Aproximated root for f(x) = {root}")
+    print(f"Aproximated root for f(x) = {root_f}")
 
     def g(x):
       return np.cos(np.sqrt(x**2))
 
-    root = bisection(g, 1, 4, tol, max_iter)
+    root_g = bisection(g, 1, 4, tol, max_iter)
 
     print(f"g(x) = cos(sqrt(x**2))")
-    print(f"Aproximated root for g(x) = {root}")
+    print(f"Aproximated root for g(x) = {root_g}")
 
  # ==========================
   # Extra: Plotting section
@@ -92,5 +93,5 @@ if __name__ == "__main__":
         plt.grid(True)
         plt.show()
 
-    plot_function(f, 0, 5, root, "f(x) = (x-1)(x-3)(x-4)")
-    plot_function(g, 1, 4, root, "g(x) = cos(sqrt(x**2))")
+    plot_function(f, 0, 5, root_f, "f(x) = (x-1)(x-3)(x-4)")
+    plot_function(g, 1, 4, root_g, "g(x) = cos(sqrt(x**2))")
