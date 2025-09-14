@@ -1,0 +1,44 @@
+\begin{frame}[fragile]{Método de la secante}
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    numbersep=3pt,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    showstringspaces=false
+}
+
+\begin{lstlisting}
+from typing import Callable, TypedDict
+import numpy as np
+
+class SecantMethod(TypedDict):
+    solution: int
+    message: str
+
+def secante(f: Callable[[float], float], x0: float, x1: float,
+           delta: float = 1e-5, max_iterations: int = 1000) -> SecantMethod:
+    if x1 == x0:
+        raise ValueError("Initial guess x0 and x1 must be different")
+    
+    for i in range(max_iterations):
+        df_numeric = (f(x1) - f(x0)) / (x1 - x0)
+        x = x1 - f(x1) / df_numeric
+        
+        if np.abs(f(x)) < delta:
+            return {"solution": float(x), 
+                   "message": f"Converged after {i+1} iterations"}
+        
+        x0, x1 = x1, x
+    
+    return {"solution": float(x), 
+           "message": "Max iterations exceeded"}
+\end{lstlisting}
+\end{frame}

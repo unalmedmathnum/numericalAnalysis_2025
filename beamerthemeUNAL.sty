@@ -1,0 +1,114 @@
+\mode<presentation>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------
+% Debug Mode
+%------------------
+% comment/uncomment this line to enable/disable debug mode
+%\newcommand*{\DEBUG}{}
+%------------------
+% in debug mode, show the boxes around the text
+\ifdefined\DEBUG
+\usepackage[absolute,overlay,showboxes]{textpos}
+\else
+\usepackage[absolute,overlay]{textpos}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------
+% Requirement
+%------------------
+\RequirePackage{babel}  % languages
+\RequirePackage[T1]{fontenc} % latin characters
+\RequirePackage{xcolor}	% colors
+\RequirePackage{tikz}	% drawing 
+\RequirePackage{soul} 	% text highlighting
+\RequirePackage{fontspec} % loads specific fonts
+\RequirePackage{listings} % listings
+\RequirePackage{shadowtext} % Text with shadows
+%------------------
+% Themes
+%------------------
+\useinnertheme{UNAL}
+\useoutertheme{UNAL}
+\usecolortheme{UNAL}
+\usefonttheme{UNAL}
+%------------------
+% Remove navigation symbols
+%------------------
+\setbeamertemplate{navigation symbols}{}
+%------------------
+% Squared blocks
+%------------------
+\setbeamertemplate{blocks}[rounded=false] 
+%------------------
+% Table of contents (outline) styling
+%------------------
+\setbeamertemplate{section in toc}[circle]
+\setbeamertemplate{subsection in toc}[square]
+\setbeamertemplate{subsubsection in toc}[square]
+%------------------
+% Transparency
+%------------------
+\setbeamercovered{transparent}
+%------------------
+% Other comands
+%------------------
+% Alert text
+\newcommand<>{\altext}[2][UNALRojo]{%
+        {\setbeamercolor{alerted text}{fg=#1}%
+    \begin{alertenv}
+        #3\relax#2%
+    \end{alertenv}}%
+}
+%------------------
+% text with backgroud color
+%
+% beamer/soul compatibility fix
+\makeatletter
+\newcommand\SoulColor{%
+  \let\set@color\beamerorig@set@color
+  \let\reset@color\beamerorig@reset@color}
+\makeatother
+%
+\newcommand{\bgtext}[2][UNALRojo]{%
+{\SoulColor\sethlcolor{#1}{\color{white}\hl{#2}}}%
+}
+%------------------
+% Frame with huge text
+\newcommand{\framecard}[2][UNALVerde]{
+    {\setbeamercolor{background canvas}{bg=#1}%
+      \begin{frame}[plain]%
+        \vfill%
+        \begin{center}%
+          {\color{White}\scshape\Huge{%
+            {#2}%
+          }}%
+        \end{center}%
+        \vfill%
+      \end{frame}%
+  }
+}
+%------------------
+% Frame with brackground and text
+\newcommand{\framepic}[3][1]{
+  {
+    \usebackgroundtemplate{%
+    \tikz[overlay,remember picture] \node[opacity=#1, at=(current page.center)] {
+      \includegraphics[width=\paperwidth]{#2}};
+    }
+    \begin{frame}[plain]
+      \huge{#3}
+    \end{frame}
+  }
+}
+%------------------
+% pdf-friendly newline in links.
+\newcommand{\pdfnewline}{\texorpdfstring{\newline}{ }} 
+%------------------
+% Fill the vertical space in a slide (to put text at the bottom).
+\newcommand{\framefill}{\vskip0pt plus 1filll} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode<all>

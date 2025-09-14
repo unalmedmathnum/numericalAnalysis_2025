@@ -1,0 +1,228 @@
+% !TeX program = xelatex
+% !BIB program = biber
+% !TeX spellcheck = es_ES
+
+%------------------
+% REQUIREMENTS
+%------------------
+% The beginning of the document with "\documentclass[aspectratio=169,usenames,dvipsnames]{beamer}" is mandatory since the template has been developed for the 16:9 aspect ratio and requires the "xcolor" and "tikz" packages.
+
+%------------------
+% DOCUMENT TYPE
+%------------------
+\documentclass[aspectratio=169,usenames,dvipsnames,spanish]{beamer}
+% Replace "spanish" for "english" or any other language.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------
+% DOCUMENT THEME
+%------------------
+\usetheme{UNAL}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%------------------
+% PACKAGES
+%------------------
+\usepackage{graphics,graphicx} % To insert graphs. They must be in the same folder than the .TEX file.
+\usepackage{amsthm, amssymb, amsfonts, latexsym, mathtools,thmtools,bbm} % Enviroments and several math symbols.
+\usepackage{ragged2e} % Justifies text.
+\usepackage{tikzsymbols} % Emojis.
+\usepackage{comment} % To comment huge portions of text.
+\usepackage{multicol} % For multiple columns of text or listings.
+\usepackage{verbatim} % For code-style text.
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define Python syntax highlighting
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    showstringspaces=false,
+    captionpos=b
+}
+% Add any additional packages that are needed here.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%------------------
+% INFO
+%------------------
+\title[Tarea 1]{Tarea 1}
+\subtitle{Análisis Numérico, código: 3006886}
+\author[Grupo 1]{%
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{.31\textwidth}p{.31\textwidth}p{.31\textwidth}}
+Haiber Alfredo Alpala Guancha & Maria Paula Ardila Otero & David Delgado Ortiz \\
+Juan Pablo Gomez Gomez       & Samuel Mira Alvarez      & Juan Diego Ospina Ocampo \\
+Jose Fernando Portilla Rosero& Mariana Valencia Cubillos& Jacobo Zapata Rojas \\
+\end{tabular}
+}
+
+%\author[Autor]{Autor de la presentación}
+\institute{Universidad Nacional de Colombia - Sede Medellín}
+\date{\today}
+% IMPORTANT: If any of the parameters are too long for the cover or require multiple lines (e.g., extensive title), their arrangement can be modified in the "beamerinnerthemeUNAL.sty" file.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+\justifying % This command justifies all text OUTSIDE of boxes/environments. To also justify text inside boxes/environments, you should use this same command within the box/environment, just right before the text.
+
+
+%------------------
+% COVER
+%------------------
+\begin{frame}
+    \titlepage 
+    % The background image, its opacity, and position can be modified in the file "beamerinnerthemeUNAL.sty".
+\end{frame}
+
+
+%------------------
+% TABLE OF CONTENTS
+%------------------
+\begin{frame}{Contenidos}
+  \tableofcontents[sections={1}]
+\end{frame}
+
+\begin{frame}{Contenidos}
+  \tableofcontents[sections={2}]
+\end{frame}
+
+
+%------------------
+% Parte 1
+%------------------
+\section{La cinemática de un brazo robótico}
+\framecard{\shadowtext{La cinemática de un brazo}\\\shadowtext{robótico}}
+\subsection{Descripción del problema}
+\input{Parte_1/descripcion}
+
+%------------------
+% Punto 1
+%------------------
+\subsection{Método de Newton para resolver el sistema no lineal}
+\input{Parte_1/Ejercicio_1/ejercicio_1}
+
+%------------------
+% Punto 2
+%------------------
+\subsection{Valores realistas para L1, L2}
+\subsection{Tres posiciones destino}
+\subsection{Evaluar los resultados del método}
+\input{Parte_1/Ejercicio_2/ejercicio_2}
+
+%------------------
+% Punto 3
+%------------------
+\subsection{Sensibilidad de las condiciones iniciales}
+\subsection{Casos donde el método converge}
+\subsection{Dificultades en la implementación}
+\input{Parte_1/Ejercicio_3/ejercicio_3}
+
+%------------------
+% Punto 4
+%------------------
+\subsection{Visualizar posiciones finales alcanzadas}
+\subsection{Visualizar trayectorias intermedias del brazo}
+\input{Parte_1/Ejercicio_4/ejercicio_4}
+
+%------------------
+% Punto 5
+%------------------
+\subsection{Generalizar el modelo a un brazo con más de 3 eslabones}
+\input{Parte_1/Ejercicio_5/ejercicio_5}
+
+%------------------
+% Parte 2
+%------------------
+
+\section{Códigos para resolver sistemas de ecuaciones}
+\framecard{\shadowtext{Códigos para resolver}\\\shadowtext{sistemas de ecuaciones}}
+%------------------
+% Propagación del error
+%------------------
+\subsection{Propagación del error}
+\input{Parte_2/Propagacion/propagacion}
+
+%------------------
+% Bisección
+%------------------
+\subsection{Bisección}
+\input{Parte_2/Biseccion/biseccion}
+
+%------------------
+% Punto fijo
+%------------------
+\subsection{Punto fijo}
+\input{Parte_2/Punto_Fijo/punto_fijo}
+
+%------------------
+% Newton
+%------------------
+\subsection{Newton}
+\input{Parte_2/Newton/newton}
+
+%------------------
+% Newton modificado
+%------------------
+\subsection{Newton modificado}
+\input{Parte_2/Newton_modificado/newton_modificado}
+
+%------------------
+% Secante
+%------------------
+\subsection{Secante}
+\input{Parte_2/Secante/secante}
+
+
+%------------------
+% Agradecimiento
+%------------------
+\framepic[0.6]{graphics/BibliotecaMedellin.jpg}{
+    \framefill
+    \textcolor{black}{%
+    \scshape
+    \shadowtext{Muchas gracias}\\
+    \shadowtext{por su atención}
+    }%
+    \vskip 1cm
+}
+
+
+
+
+
+
+
+% Comentar desde este punto hasta "\end{frame}" para no mostrar referencias. Esto se debe hacer sólo si NUNCA se usó el comando \cite en las diapositivas.
+%\section{Referencias}
+%\begin{frame}[allowframebreaks]
+%\frametitle{Referencias}
+%\bibliographystyle{amsalpha} %Estilo bibliografía.
+%{\scriptsize \justifying
+%\bibliography{References}}
+%\end{frame}
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
