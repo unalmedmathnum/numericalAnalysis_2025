@@ -94,7 +94,7 @@ if __name__ == "__main__":
     
     max_iter = 100 # Maximum number of iterations
     
-    p0 = 0.5 # Initial guess
+    p0 = 1.5 # Initial guess
     
     interval = (1 , 3)  # Interval [a, b] to check convergence conditions
 
