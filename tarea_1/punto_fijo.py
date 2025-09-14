@@ -111,7 +111,7 @@ if __name__ == "__main__":
 # ==========================
   # Extra: Plotting section
     # ==========================
-    g = sp.lambdify(x, f, 'numpy') 
+    g = sp.lambdify(x, f, 'numpy') # Convert sympy expression to a numpy-compatible function
     # Check convergence conditions
     ok, explanation = check_convergence_conditions(f, interval)
     print(explanation)
@@ -121,7 +121,7 @@ if __name__ == "__main__":
         print("Fixed point:", root)
 
         # ---------- Plotting---------
-        x_vals = np.linspace(0, 4, 400)
+        x_vals = np.linspace(0, 4, 400) # x values for plotting
         y_vals = g(x_vals)
 
         plt.figure(figsize=(6, 5))
