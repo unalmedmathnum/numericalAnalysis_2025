@@ -50,13 +50,23 @@ def check_convergence_conditions(f_expr, interval):
     a, b = interval
 
     # Condition 1: g(x) in [a,b] for all x in [a,b]
-    # Check range roughly by evaluating g(x) at points in the interval
-    vals = [g.subs(x, val) for val in np.linspace(a, b, 10000)]
-    cond1 = all(a <= val <= b for val in vals)
+    
+    crit_points = sp.solve(g_prime, x) # Critical points: solve g'(x) = 0
+    crit_points = [p for p in crit_points if p.is_real and a <= float(p.evalf()) <= b] # Keep only real critical points within [a, b]
+    candidates = [g.subs(x, val) for val in [a, b] + crit_points]# Evaluate g(x) at the interval endpoints and at critical points
+    # Compute minimum and maximum values of g(x) in [a, b]
+    g_min = min([float(val.evalf()) for val in candidates])
+    g_max = max([float(val.evalf()) for val in candidates])
 
+    cond1 = (g_min >= a) and (g_max <= b)
+    
     # Condition 2: |g'(x)| <= k < 1 for all x in (a,b)
-    g_prime_vals = [abs(g_prime.subs(x, val)) for val in np.linspace(a, b, 10000)]
-    k_max = max(g_prime_vals)
+    
+    crit_points = sp.solve(sp.diff(g_prime, x), x) # Critical points: solve g''(x) = 0   
+    crit_points = [p for p in crit_points if p.is_real and a <= float(p.evalf()) <= b]# Keep only real critical points within [a, b]
+    candidates = [abs(g_prime.subs(x, val)) for val in [a, b] + crit_points] # Evaluate g(x) at the interval endpoints and at critical points
+    k_max = max([float(c.evalf()) for c in candidates]) # Maximum value of |g'(x)| over [a, b]
+    
     cond2 = k_max < 1
 
     # Prepare a formatted string to explain the results of the check.
@@ -81,26 +91,27 @@ def fixed_point(f, p0, tol, max_iter):
 #-----------------------Example -----------------------------------
 if __name__ == "__main__":
     
-    tol = 1e-4
+    tol = 1e-5 # Tolerance
     
-    max_iter = 100
+    max_iter = 100 # Maximum number of iterations
     
-    p0 = 0.5
+    p0 = 0.5 # Initial guess
     
-    interval = (0 , 4)
+    interval = (1 , 3)  # Interval [a, b] to check convergence conditions
 
-    # Define g(x) in sympy
-    x = sp.symbols('x')
+    
+    x = sp.symbols('x') 
+ 
+    f = sp.sqrt(x) #example fuction
 
-    f = x/2 + 1 #example fuction
-
-    g = sp.lambdify(x, f, 'numpy')
+    
 
 
 
 # ==========================
   # Extra: Plotting section
     # ==========================
+    g = sp.lambdify(x, f, 'numpy') 
     # Check convergence conditions
     ok, explanation = check_convergence_conditions(f, interval)
     print(explanation)
