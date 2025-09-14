@@ -1,18 +1,27 @@
 \begin{frame}[fragile]{Método de la secante}
 \lstset{
     language=Python,
-    basicstyle=\ttfamily\tiny,
-    keywordstyle=\color{blue}\bfseries,
-    commentstyle=\color{gray}\itshape,
-    stringstyle=\color{red},
-    numberstyle=\tiny\color{gray},
+    basicstyle=\fontfamily{GeistMono-TLF}\selectfont\tiny,
+    keywordstyle=\color{purple}\bfseries,
+    commentstyle=\color{green!60!black}\itshape,
+    stringstyle=\color{orange!80!black},
+    numberstyle=\tiny\color{gray!70},
+    identifierstyle=\color{blue!70!black},
     numbers=left,
-    numbersep=3pt,
+    numbersep=5pt,
     frame=single,
+    frameround=tttt,
+    framerule=0.5pt,
+    rulecolor=\color{gray!30},
+    backgroundcolor=\color{gray!5},
     breaklines=true,
     breakatwhitespace=true,
-    tabsize=2,
-    showstringspaces=false
+    tabsize=4,
+    showstringspaces=false,
+    emphstyle=\color{red!80!black}\bfseries,
+    emph={def, class, import, from, return, if, for, in, range},
+    emphstyle={[2]\color{teal!80!black}},
+    emph={[2]{True, False, None}},
 }
 
 \begin{lstlisting}
