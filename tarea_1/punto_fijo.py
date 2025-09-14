@@ -32,7 +32,7 @@ Returns:
 """
 
 
-def check_convergence_conditions(f_expr, interval):
+def check_convergence_conditions(f, interval):
     """
     Verifies the fixed point convergence conditions for f(x).
 
@@ -44,36 +44,35 @@ def check_convergence_conditions(f_expr, interval):
         conditions_met (bool), explanation (str)
     """
     x = sp.symbols('x')
-    g = f
-    g_prime = sp.diff(g, x)  # derivative g'(x)
+    f_prime = sp.diff(f, x)  # derivative f'(x)
 
     a, b = interval
 
-    # Condition 1: g(x) in [a,b] for all x in [a,b]
+    # Condition 1: f(x) in [a,b] for all x in [a,b]
     
-    crit_points = sp.solve(g_prime, x) # Critical points: solve g'(x) = 0
+    crit_points = sp.solve(f_prime, x) # Critical points: solve f'(x) = 0
     crit_points = [p for p in crit_points if p.is_real and a <= float(p.evalf()) <= b] # Keep only real critical points within [a, b]
-    candidates = [g.subs(x, val) for val in [a, b] + crit_points]# Evaluate g(x) at the interval endpoints and at critical points
-    # Compute minimum and maximum values of g(x) in [a, b]
+    candidates = [f.subs(x, val) for val in [a, b] + crit_points]# Evaluate g(x) at the interval endpoints and at critical points
+    # Compute minimum and maximum values of f(x) in [a, b]
     g_min = min([float(val.evalf()) for val in candidates])
     g_max = max([float(val.evalf()) for val in candidates])
 
     cond1 = (g_min >= a) and (g_max <= b)
     
-    # Condition 2: |g'(x)| <= k < 1 for all x in (a,b)
+    # Condition 2: |f'(x)| <= k < 1 for all x in (a,b)
     
-    crit_points = sp.solve(sp.diff(g_prime, x), x) # Critical points: solve g''(x) = 0   
+    crit_points = sp.solve(sp.diff(f_prime, x), x) # Critical points: solve f''(x) = 0   
     crit_points = [p for p in crit_points if p.is_real and a <= float(p.evalf()) <= b]# Keep only real critical points within [a, b]
-    candidates = [abs(g_prime.subs(x, val)) for val in [a, b] + crit_points] # Evaluate g(x) at the interval endpoints and at critical points
-    k_max = max([float(c.evalf()) for c in candidates]) # Maximum value of |g'(x)| over [a, b]
+    candidates = [abs(f_prime.subs(x, val)) for val in [a, b] + crit_points] # Evaluate f(x) at the interval endpoints and at critical points
+    k_max = max([float(c.evalf()) for c in candidates]) # Maximum value of |f'(x)| over [a, b]
     
     cond2 = k_max < 1
 
     # Prepare a formatted string to explain the results of the check.
 
     explanation = f"""
-    Condition 1 (g(x) in [{a}, {b}]): {cond1}
-    Condition 2 (|g'(x)| <= k < 1): {cond2}, with max |g'(x)| ≈ {k_max:.4f}
+    Condition 1 (f(x) in [{a}, {b}]): {cond1}
+    Condition 2 (|f'(x)| <= k < 1): {cond2}, with max |f'(x)| ≈ {k_max:.4f}
     """
     return cond1 and cond2, explanation
 
@@ -111,7 +110,7 @@ if __name__ == "__main__":
 # ==========================
   # Extra: Plotting section
     # ==========================
-    g = sp.lambdify(x, f, 'numpy') # Convert sympy expression to a numpy-compatible function
+    g = sp.lambdify(x, f, 'numpy') #
     # Check convergence conditions
     ok, explanation = check_convergence_conditions(f, interval)
     print(explanation)
