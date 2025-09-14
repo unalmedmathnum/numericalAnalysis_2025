@@ -1,0 +1,81 @@
+\mode<presentation>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------
+% Items settings
+%------------------
+\setbeamertemplate{items}[circle]
+%------------------
+% Text colour settings
+%------------------
+\usebeamercolor[fg]{normal text}
+%------------------
+% Background and horizontal line of title page
+%------------------
+\setbeamertemplate{background}{
+\begin{tikzpicture}
+%
+\ifnum\thepage>1\relax%
+% background for pages > 1 
+	%\fill[white,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+\else
+  \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+  % Background image
+  \node[opacity=0.1, at=(current page.center)]{\includegraphics[width=\paperwidth]{graphics/SedeMedellin.jpg}};
+  % line between logo and title
+  \fill[color=UNALGrisClaro] (1,6.4) rectangle(2.5,6.5);  
+  \fill[color=UNALRojo] (2.5,6.4) rectangle(5.3,6.5);  
+  \fill[color=UNALVerde] (5.3,6.4) rectangle(\the\paperwidth,6.5); 
+\fi
+% in debug mode, show the grid
+\ifdefined\DEBUG
+	\draw[help lines,xstep=1,ystep=1,gray] (current page.south west) grid (current page.north east);
+\fi
+\end{tikzpicture}
+}
+%------------------
+% Text and logo in title page
+%------------------
+\defbeamertemplate*{title page}{UNALtitle}[1][]{
+% --- Título ---
+\begin{textblock*}{14cm}(1cm,3cm)
+  {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle}
+\end{textblock*}
+
+% --- Subtítulo ---
+\begin{textblock*}{14cm}(1cm,3.8cm)
+  {\usebeamercolor[fg]{subtitle}\usebeamerfont{subtitle}\insertsubtitle}
+\end{textblock*}
+
+% --- Autores (con parbox y tamaño reducido) ---
+\begin{textblock*}{14cm}(1cm,5.4cm)
+  \raggedleft
+  {\usebeamercolor[fg]{author}\usebeamerfont{author}%
+   \small
+   \parbox[t]{13.8cm}{\texorpdfstring{\insertauthor}{Autores}}}
+\end{textblock*}
+
+% --- Instituto (más abajo) ---
+\begin{textblock*}{14cm}(1cm,6.9cm)
+  \raggedleft
+  {\usebeamercolor[fg]{institute}\usebeamerfont{institute}\insertinstitute}
+\end{textblock*}
+
+% --- Fecha (aún más abajo) ---
+\begin{textblock*}{14cm}(1cm,7.4cm)
+  \raggedleft
+  {\usebeamercolor[fg]{date}\usebeamerfont{date}\insertdate}
+\end{textblock*}
+
+% --- Logo ---
+\begin{tikzpicture}[overlay,remember picture]
+  \node[inner sep=0pt] at (2.1,2.5){\includegraphics[width=5cm]{graphics/UNAL_colortext.png}};
+\end{tikzpicture}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode
+<all>

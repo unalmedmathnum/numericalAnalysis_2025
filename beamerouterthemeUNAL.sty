@@ -1,0 +1,86 @@
+\mode<presentation>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------
+% Vertical left line
+%------------------
+%\setbeamertemplate{sidebar canvas left}{
+%\begin{tikzpicture}
+%\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+%  % vertical line
+%  \fill[color=UNALAzulOscuro] (0,0) rectangle(0.1,1.28);
+%  \fill[color=UNALAzulClaro] (0,1.28) rectangle(0.1,2.56);
+%  \fill[color=UNALVerdeClaro] (0,2.56) rectangle(0.1,3.84);
+%  \fill[color=UNALAmarillo] (0,3.84) rectangle(0.1,5.12);
+%  \fill[color=UNALBeige] (0,5.12) rectangle(0.1,6.4);
+%  \fill[color=UNALNaranja] (0,6.4) rectangle(0.1,7.68);
+%  \fill[color=UNALVioleta] (0,7.68) rectangle(0.1,\the\paperheight);
+%\end{tikzpicture}}
+%------------------
+% Frame title
+%------------------
+\defbeamertemplate*{frametitle}{UNALtitle}[1][]
+{
+\begin{tikzpicture}
+\useasboundingbox (0,0) rectangle(\the\paperwidth,0.95);
+% Three-colored line
+ \fill[color=UNALGrisClaro] (0,-0.4) rectangle(1.5,-0.3);
+ \fill[color=UNALRojo] (1.5,-0.4) rectangle(4.3,-0.3);
+ \fill[color=UNALVerde] (4.3,-0.4) rectangle(\the\paperwidth,-0.3);
+\end{tikzpicture}
+% If we don't have a subtitle, put the title
+% at the center of the header
+\ifx\insertframesubtitle\@empty
+%
+  \begin{textblock*}{14cm}(1cm,0.45cm)
+  {\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\insertframetitle}
+  \end{textblock*}
+%
+\else
+% If we have both title and subtitle, stack them
+  \begin{textblock*}{14cm}(1cm,0.2cm)
+  {\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\insertframetitle}
+  \end{textblock*}
+
+  \begin{textblock*}{14cm}(1cm,0.8cm)
+  {\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\insertframesubtitle}
+  \end{textblock*}
+%
+\fi
+}
+%------------------
+% Frame footer (robusto y responsivo)
+%------------------
+\setbeamertemplate{footline}{%
+  \ifnum\insertpagenumber>1\relax
+    \leavevmode
+    % --- Barra tricolor (proporcional al ancho de página) ---
+    \begin{tikzpicture}[remember picture,overlay]
+      % Damos altura suficiente al bounding box para que no se corte
+      \useasboundingbox (0,0) rectangle (\paperwidth,0.45cm);
+      % Línea ubicada dentro del bounding box
+      \fill[color=UNALVerde]     (0,0.12cm) rectangle (0.62\paperwidth,0.2cm);
+      \fill[color=UNALRojo]      (0.62\paperwidth,0.12cm) rectangle (0.78\paperwidth,0.2cm);
+      \fill[color=UNALGrisClaro] (0.78\paperwidth,0.12cm) rectangle (\paperwidth,0.2cm);
+    \end{tikzpicture}
+
+    % --- Contenido del pie en una sola hbox (sin posiciones absolutas) ---
+    \hbox to \paperwidth{%
+      \hspace*{0.8em}%
+      \usebeamerfont{title in head/foot}\insertshorttitle%
+      \hfill
+      {\color{UNALGrisOscuro}\itshape \insertshortinstitute}%
+      \hfill
+      \usebeamerfont{title in head/foot}\insertframenumber/\inserttotalframenumber%
+      \hspace*{0.8em}%
+    }%
+    % Separación para que no quede pegado al borde
+    \vspace{0.28cm}%
+  \fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode<all>
