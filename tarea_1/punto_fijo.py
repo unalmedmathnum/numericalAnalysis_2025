@@ -114,7 +114,7 @@ if __name__ == "__main__":
         y_vals = g(x_vals)
 
         plt.figure(figsize=(6, 5))
-        plt.plot(x_vals, y_vals, label="g(x)")
+        plt.plot(x_vals, y_vals, label="f(x)")
         plt.plot(x_vals, x_vals, 'k--', label="y = x")
         if isinstance(root, (int, float)): # Check if root is a number
             plt.scatter(root, g(root), color="red", zorder=5, label=f"Fixed point ≈ {root:.4f}")
@@ -122,7 +122,7 @@ if __name__ == "__main__":
         # Plot configuration
         plt.title("Fixed Point Method with Convergence Check")
         plt.xlabel("x")
-        plt.ylabel("g(x)")
+        plt.ylabel("f(x)")
         plt.legend()
         plt.grid(True)
         plt.show()
