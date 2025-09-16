@@ -5,10 +5,10 @@ Error propagation in arithmetic operations.
 This module defines a collection of functions for analysing how measurement
 errors propagate through basic arithmetic operations such as addition,
 subtraction, multiplication and division.  The functions take exact input
-values along with their associated absolute errors and compute intervals for
+values along with their associated uncertainties and compute intervals for
 the possible results as well as estimates of the absolute and relative error.
 
-When a measurement a is quoted with an absolute error delta_a, 
+When a measurement a is quoted with an uncertainty delta_a, 
 the true value lies somewhere in the interval
 [a - delta_a, a + delta_a].  For sums and differences the worst-case absolute error in
 the result is the sum of the input absolute errors.  For products and
@@ -16,24 +16,19 @@ quotients the relative error of the result is bounded by a combination of
 relative errors of the inputs; for small uncertainties the product of
 uncertainties can usually be neglected.
 
-At the bottom of the file a demonstration script constructs tables that
-compare exact results with approximate results under different sign choices
-for the uncertainties.  
-
 """
 
 # Standard library import for basic mathematical functions and constants.
 import math
 # Pandas is used in the demonstration to organise results into tables. 
 import pandas as pd
-# Matplotlib can be used to plot results visually. 
-import matplotlib.pyplot as plt
 
 # -----------------------------------------------------------------------------
-# Basic utilities
+# Interval arithmetic for elementary operations
 #
-# The functions in this section provide simple helpers for constructing
-# intervals and deriving error bounds from those intervals.
+# The following functions derive the range of possible results when adding,
+# subtracting, multiplying or dividing two measured quantities. Each function
+# returns the exact central value, the endpoints of the interval.
 # -----------------------------------------------------------------------------
 
 def interval(a: float, da: float, clip_zero: bool = False):
@@ -73,31 +68,19 @@ def interval(a: float, da: float, clip_zero: bool = False):
         low = max(0.0, low)
     return low, high
 
-
-# -----------------------------------------------------------------------------
-# Interval arithmetic for elementary operations
-#
-# The following functions derive the range of possible results when adding,
-# subtracting, multiplying or dividing two measured quantities. Each function
-# returns the exact central value, the endpoints of the interval.
-# -----------------------------------------------------------------------------
-
 def interval_sum(a: float, b: float, da: float, db: float):
-    """Interval and error bounds for ``z = a + b``.
+    """Interval for z = a + b.
 
-    The result of adding two quantities ``a`` and ``b`` with absolute errors
-    ``±da`` and ``±db`` lies in the interval obtained by adding the minimum
-    possible values and the maximum possible values, respectively.  The
-    absolute error bound is simply ``da + db``, consistent with the theory
-    introduced in class.
+    Given central values a and b with absolute uncertainties δa and δb,
+    the sum can vary between the sum of the lower bounds and the sum of the upper
+    bounds of each interval.  This function returns the exact sum and the interval
+    of all possible sums.
 
     Returns
     -------
     tuple
-        ``(zc, zmin, zmax, abs_bound, rel_bound)`` where ``zc`` is the exact
-        sum ``a + b``, ``[zmin, zmax]`` is the interval of all possible sums,
-        and ``abs_bound`` and ``rel_bound`` are the absolute and relative
-        error bounds.
+        (zc, zmin, zmax) where zc is the exact sum a + b and
+        [zmin, zmax] is the interval of all possible sums.
     """
     amin, amax = interval(a, da)
     bmin, bmax = interval(b, db)
@@ -106,20 +89,19 @@ def interval_sum(a: float, b: float, da: float, db: float):
     zc = a + b
     return zc, zmin, zmax
 
-
 def interval_difference(a: float, b: float, da: float, db: float):
-    """Interval and error bounds for ``z = a − b``.
+    """Interval for z = a - b.
 
-    The difference ``a − b`` is equivalent to adding ``a`` and ``−b``.  To
-    minimise and maximise the result, the smallest possible ``a`` is combined
-    with the largest possible ``b`` (for the lower bound) and vice versa for
-    the upper bound.  The absolute error bound is again ``da + db``.
+    The difference a - b is equivalent to adding a and -b. To
+    minimise and maximise the result, the smallest possible a is combined
+    with the largest possible b (for the lower bound) and vice versa for
+    the upper bound.  
 
     Returns
     -------
     tuple
-        ``(zc, zmin, zmax, abs_bound, rel_bound)`` analogous to
-        :func:`interval_sum`.
+        (zc, zmin, zmax) where zc is the exact sum a - b and
+        [zmin, zmax] is the interval of all possible differences.
     """
     amin, amax = interval(a, da)
     bmin, bmax = interval(b, db)
@@ -131,49 +113,46 @@ def interval_difference(a: float, b: float, da: float, db: float):
     zc = a - b
     return zc, zmin, zmax
 
-
 def interval_product(a: float, b: float, da: float, db: float):
-    """Interval and error bounds for ``z = a × b``.
+    """Interval for z = a x b.
 
     The product of two quantities with uncertainties requires considering all
-    combinations of the extreme values of ``a`` and ``b``.  For four
-    combinations of ``a ± da`` and ``b ± db``, the minimum and maximum
-    products give the interval.  The absolute and relative error bounds are
-    derived from this interval.
+    combinations of the extreme values of a and b.  For four
+    combinations of a ± da and b ± db, the minimum and maximum
+    products give the interval.  
 
     Returns
     -------
     tuple
-        ``(zc, zmin, zmax, abs_bound, rel_bound)`` analogous to
-        :func:`interval_sum`.
+        (zc, zmin, zmax) where zc is the exact sum a * b and
+        [zmin, zmax] is the interval of all possible products.
     """
     amin, amax = interval(a, da)
     bmin, bmax = interval(b, db)
-    # The distributive property shows that the extreme products occur at the
-    # corners of the rectangle defined by the interval endpoints.
+    # Evaluate all four combinations of extremes.
     candidates = [amin * bmin, amin * bmax, amax * bmin, amax * bmax]
     zmin = min(candidates)
     zmax = max(candidates)
     zc = a * b
     return zc, zmin, zmax
 
-
 def interval_quotient(a: float, b: float, da: float, db: float):
-    """Interval and error bounds for ``z = a ÷ b``.
+    """Interval for z = a ÷ b.
 
     Division by a quantity that may include zero in its interval is undefined
     because the result can become arbitrarily large.  If the interval for
-    ``b ± db`` crosses zero, the function returns infinite bounds to indicate
+    b ± db crosses zero, the function returns infinite bounds to indicate
     that no finite interval contains all possible quotients.  Otherwise the
-    interval endpoints are found by considering all combinations of ``a ± da``
-    and ``b ± db``.
+    interval endpoints are found by considering all combinations of a ± da
+    and b ± db.
 
     Returns
     -------
     tuple
-        ``(zc, zmin, zmax, abs_bound, rel_bound)`` analogous to
-        :func:`interval_sum`.  If division by zero is possible, ``zmin`` and
-        ``zmax`` are ``-∞`` and ``+∞``, respectively, and both error bounds
+        (zc, zmin, zmax) where zc is the exact sum a ÷ b and
+        [zmin, zmax] is the interval of all possible quotients.
+        If division by zero is possible, zmin and
+        zmax are -∞ and +∞, respectively, and both error bounds
         are infinite.
     """
     amin, amax = interval(a, da)
@@ -182,14 +161,13 @@ def interval_quotient(a: float, b: float, da: float, db: float):
     # large in magnitude and there is no finite bound.
     if bmin <= 0.0 <= bmax:
         zc = (a / b) if b != 0 else math.nan
-        return zc, -math.inf, math.inf, math.inf, math.inf
+        return zc, -math.inf, math.inf
     # Otherwise, evaluate all four combinations of extremes.
     candidates = [amin / bmin, amin / bmax, amax / bmin, amax / bmax]
     zmin = min(candidates)
     zmax = max(candidates)
     zc = a / b
     return zc, zmin, zmax
-
 
 # -----------------------------------------------------------------------------
 # Error propagation formulas
@@ -204,16 +182,16 @@ def error_propagation_sum(a: float, b: float, delta_a: float, delta_b: float):
 
     The maximum possible deviation of the sum is the sum of the absolute
     uncertainties of the operands.  This function computes the exact sum,
-    constructs a worst‑case approximate sum using ``(a + δa) + (b + δb)``, and
+    constructs a worst-case approximate sum using (a + delta_a) + (b + delta_b), and
     returns both the observed and theoretical errors.
 
     Returns
     -------
     tuple
-        ``(exact_value, approx_value, abs_bound, abs_error, rel_error)`` where
+        (exact_value, approx_value, abs_bound, abs_error, rel_error) where
         the last three elements are the theoretical bound, the observed
         absolute error and the observed relative error, respectively.  If the
-        exact sum is zero, the relative error is reported as ``math.inf``.
+        exact sum is zero, the relative error is reported as math.inf.
     """
     exact_value = a + b
     approx_value = (a + delta_a) + (b + delta_b)
@@ -227,18 +205,18 @@ def error_propagation_sum(a: float, b: float, delta_a: float, delta_b: float):
 
 
 def error_propagation_difference(a: float, b: float, delta_a: float, delta_b: float) -> tuple:
-    """Propagate errors through a difference ``a − b``.
+    """Propagate errors through a difference a - b.
 
-    Although subtraction can reduce the result, the worst‑case absolute error
-    bound is still the sum of the individual absolute uncertainties.  This
-    function follows the same pattern as :func:`error_propagation_sum` but
-    constructs the approximate result using ``(a + δa) − (b + δb)``.
+    Although subtraction can reduce the result, the worst-case absolute error
+    bound is still the sum of the individual absolute uncertainties.  
 
     Returns
     -------
     tuple
-        ``(exact_value, approx_value, abs_bound, abs_error, rel_error)`` as in
-        :func:`error_propagation_sum`.
+        (exact_value, approx_value, abs_bound, abs_error, rel_error) where
+        the last three elements are the theoretical bound, the observed
+        absolute error and the observed relative error, respectively.  If the
+        exact sum is zero, the relative error is reported as math.inf.
     """
     exact_value = a - b
     approx_value = (a + delta_a) - (b + delta_b)
@@ -252,19 +230,21 @@ def error_propagation_difference(a: float, b: float, delta_a: float, delta_b: fl
 
 
 def error_propagation_product(a: float, b: float, delta_a: float, delta_b: float) -> tuple:
-    """Propagate errors through a product ``a × b``.
+    """Propagate errors through a product a x b.
 
-    When multiplying two quantities, the first‑order approximation for the
-    absolute error of the product is ``|b|·δa + |a|·δb``.  The exact product
-    and an approximate product using ``(a + δa) × (b + δb)`` are computed to
-    determine the observed error.  The term ``δa·δb`` is typically very small
+    When multiplying two quantities, the first-order approximation for the
+    absolute error of the product is |b|·delta_a + |a|·delta_b.  The exact product
+    and an approximate product using (a + delta_a) x (b + delta_b) are computed to
+    determine the observed error.  The term delta_a·delta_b is typically very small
     compared with the other terms and is ignored in the bound.
 
     Returns
     -------
     tuple
-        ``(exact_value, approx_value, abs_bound, abs_error, rel_error)`` as in
-        :func:`error_propagation_sum`.
+        (exact_value, approx_value, abs_bound, abs_error, rel_error) where
+        the last three elements are the theoretical bound, the observed
+        absolute error and the observed relative error, respectively.  If the
+        exact sum is zero, the relative error is reported as math.inf.
     """
     exact_value = a * b
     approx_value = (a + delta_a) * (b + delta_b)
@@ -278,24 +258,26 @@ def error_propagation_product(a: float, b: float, delta_a: float, delta_b: float
 
 
 def error_propagation_quotient(a: float, b: float, delta_a: float, delta_b: float) -> tuple:
-    """Propagate errors through a quotient ``a ÷ b``.
+    """Propagate errors through a quotient a ÷ b.
 
-    Division requires that the denominator ``b`` be non‑zero.  The approximate
-    result is computed from ``(a + δa) / (b + δb)`` provided the perturbed
-    denominator is non‑zero.  The first‑order approximation for the absolute
-    error bound of the quotient is ``(1/|b|)·δa + |a|/|b|²·δb``.  If the exact
-    quotient is zero, the relative error is reported as ``math.inf``.
+    Division requires that the denominator b be non-zero.  The approximate
+    result is computed from (a + delta_a) / (b + delta_b) provided the perturbed
+    denominator is non-zero.  The first-order approximation for the absolute
+    error bound of the quotient is (1/|b|)·delta_a + |a|/|b|^2·delta_b.  If the exact
+    quotient is zero, the relative error is reported as math.inf.
 
     Returns
     -------
     tuple
-        ``(exact_value, approx_value, abs_bound, abs_error, rel_error)`` as in
-        :func:`error_propagation_sum`.
+        (exact_value, approx_value, abs_bound, abs_error, rel_error) where
+        the last three elements are the theoretical bound, the observed
+        absolute error and the observed relative error, respectively.  If the
+        exact sum is zero, the relative error is reported as math.inf.
 
     Raises
     ------
     ValueError
-        If ``b`` is zero.
+        If b is zero.
     """
     if b == 0:
         raise ValueError("The denominator b must not be zero for division.")
@@ -317,9 +299,7 @@ def error_propagation_quotient(a: float, b: float, delta_a: float, delta_b: floa
 # Demonstration
 #
 # When this module is run as a script, it prints tables comparing exact and
-# approximate results for a couple of examples.  Users can change the sign
-# choices to explore how different combinations of positive and negative
-# uncertainties affect the outcome.
+# approximate results for a couple of examples.
 # -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
@@ -447,7 +427,6 @@ if __name__ == "__main__":
 
         df = pd.DataFrame(rows)
         
-        # Define the order of columns for readability.
         column_order = [
             "Operation",
             "a ± δa",
