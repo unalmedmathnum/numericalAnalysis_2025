@@ -1,6 +1,10 @@
-from typing import Callable
+from typing import Callable, TypedDict
 
 import numpy as np
+
+class NewtonModified(TypedDict):
+    solution: float
+    message: str
 
 
 def newton_modified(
@@ -10,7 +14,7 @@ def newton_modified(
     x0: float,
     delta: float,
     m: int,
-):
+) -> NewtonModified:
     """
     Parameters
     ----------
