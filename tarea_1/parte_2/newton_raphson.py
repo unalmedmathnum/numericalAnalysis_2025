@@ -7,11 +7,12 @@ import sympy as sp
 
 
 def convergence_criteria(f, interval):
-    """ Numerically checks the convergence criteria for the fixed-point iteration
+    """ Numerically checks the convergence criteria for the Newton - fixed point iteration
     g(x) = x - f(x)/f'(x) over a given interval. """
 
     x = sp.symbols("x")
     f_prime = sp.diff(f, x)
+    f_second = sp.diff(f_prime, x)
     g = x - f / f_prime
     g_prime = sp.diff(g, x)
 
@@ -20,6 +21,7 @@ def convergence_criteria(f, interval):
     g_num = sp.lambdify(x, g, "numpy")
     g_prime_num = sp.lambdify(x, g_prime, "numpy")
     f_num = sp.lambdify(x, f, "numpy")
+    f_second_num = sp.lambdify(x, f_second, "numpy")
 
     # lambdify takes a symbolic expression (in this case g) and converts it into a Python function
     # Then g_num(2.5) = computes g(2.5), or g_num(linspace(0,4)) computes g(x) for that array
@@ -39,6 +41,7 @@ def convergence_criteria(f, interval):
 
     # Condition 2: |g'(x)| < 1
     g_prime_vals = g_prime_num(sample)
+    g_prime_vals = np.atleast_1d(g_prime_vals)
     g_prime_vals = np.abs(g_prime_vals[np.isfinite(g_prime_vals)])
     k_max = np.max(g_prime_vals) if len(g_prime_vals) > 0 else np.inf
     cond2 = k_max < 1
@@ -55,12 +58,27 @@ def convergence_criteria(f, interval):
     # If f(a) and f(b) are not nan or np.inf, then by the Intermediate Value Theorem
     # we check that the function crosses f(x) = 0
 
+    # Condition 4: f'' exists and is approximately continuous
+    f2_vals = f_second_num(sample)
+    f2_vals = np.atleast_1d(f2_vals)
+    f2_vals = f2_vals[np.isfinite(f2_vals)]
+    cond4 = len(f2_vals) > 0
+    if cond4:
+        diffs = np.abs(np.diff(f2_vals))
+        if len(diffs) > 0:
+            cond4 = np.max(diffs) < 1e2  # Arbitrary threshold
+        else:
+            cond4 = True
+
+
+
     explanation = f"""
     Convergence Criteria Check
     Interval: [{a}, {b}]
     1. g(x) maps the interval to itself: {cond1}
     2. |g'(x)| < 1 (Contraction mapping): {cond2}, max |g'(x)| ≈ {k_max:.4f}
     3. Root is guaranteed to exist by IVT: {cond3}
+    4. f'' exists and is approx. continuous: {cond4}
 
     """
     return cond1 and cond2 and cond3, explanation
@@ -92,13 +110,25 @@ def newton_raphson(f, f_prime, p0, tol, max_iter):
 if __name__ == "__main__":
     # Parameterers:
     tol = 1e-6
-    max_iter = 100
-    p0 = 0.5  # Initial point
-    interval = (1, 5)  # Interval for theorical analysis
+    max_iter = 10000
+    p0 = 5  # Initial point
+    interval = (0, 2)  # Interval for theorical analysis
     x = sp.symbols('x')
 
+    """test_functions = [
+        ( x ** 3 - 2, (0, 2), 1.0),
+        ( (x - 1) ** 2, (0, 2), 0.5),
+        ( (x - 1) ** 3, (0, 2), 1.5),
+        ( sp.cos(x) - x, (0, 1), 0.5),
+        ( sp.sin(x), (-2, 2), 2.0),
+        ( sp.exp(x) - 2, (0, 2), 0.5),
+        ( sp.tan(x), (-1, 1), 0.1),
+        ( sp.Abs(x), (-1, 1), 0.5) -> Fatal error
+        ( x ** (1 / sp.Integer(3)), (-1, 1), 0.5),
+    ]"""
+
     # Function
-    function = x ** 3 - 2 * x + 2
+    function = (x - 1) ** 2
 
     print("*** Theorical analysis of convergence ***")
     converges_guaranteed, msg = convergence_criteria(function, interval)
