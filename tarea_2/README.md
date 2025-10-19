@@ -135,36 +135,3 @@ El script genera:
   7. Error máximo vs número de puntos (e^x)
   8. Fenómeno de Runge con función 1/(1+25x²)
   9. Error máximo vs n mostrando crecimiento del error
-
-## Teoría Matemática
-
-### Gradiente Descendente
-
-Para resolver el sistema **Ax = b** donde A es simétrica y definida positiva, se minimiza la función cuadrática:
-
-f(x) = (1/2)x^T A x - b^T x
-
-El algoritmo iterativo es:
-1. Calcular el residuo: r = b - Ax
-2. Calcular el tamaño de paso óptimo: α = (r^T r) / (r^T A r)
-3. Actualizar la solución: x = x + α·r
-
-### Interpolación de Lagrange
-
-Dado un conjunto de n+1 puntos {(x_i, y_i)}, el polinomio interpolador de Lagrange es:
-
-P(x) = Σ_{i=0}^{n} y_i · L_i(x)
-
-donde los polinomios base son:
-
-L_i(x) = Π_{j=0, j≠i}^{n} (x - x_j) / (x_i - x_j)
-
-## Autores
-
-Grupo 2 - Análisis Numérico
-Universidad Nacional de Colombia
-
-## Licencia
-
-Este código se proporciona con fines educativos para el curso de Análisis Numérico.
-
